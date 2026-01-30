@@ -9,6 +9,7 @@ import TermsView from '../components/TermsView';
 import ThinkingIndicator from '../components/ThinkingIndicator';
 import SkeletonLoader from '../components/SkeletonLoader';
 import { generateInnovations } from '../services/geminiService';
+import { saveSuggestion } from '../services/suggestionsService';
 import { AppState, ChatMessage as ChatMessageType } from '../types';
 import { AlertCircle } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
@@ -97,6 +98,17 @@ const Home: React.FC = () => {
         handleGenerate(text);
     };
 
+    const handleSaveSuggestion = async (message: ChatMessageType) => {
+        if (!user || !message.suggestions) return;
+
+        // Find the user message that preceded this AI message
+        const msgIndex = messages.findIndex(m => m.id === message.id);
+        const userMsg = msgIndex > 0 ? messages[msgIndex - 1] : null;
+        const inputText = userMsg?.content || 'Saved suggestion';
+
+        await saveSuggestion(user.uid, inputText, message.suggestions);
+    };
+
     // If viewing terms, show it regardless
     if (currentView === 'terms') {
         return <TermsView onBack={() => setCurrentView('chat')} />;
@@ -144,6 +156,7 @@ const Home: React.FC = () => {
                                             message={msg}
                                             onRefine={handleRefine}
                                             onFollowUp={handleFollowUp}
+                                            onSave={handleSaveSuggestion}
                                         />
                                     ))}
 
