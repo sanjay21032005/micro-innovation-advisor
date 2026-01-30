@@ -1,7 +1,7 @@
 import { GoogleGenAI, Type } from "@google/genai";
 import { MicroInnovation } from "../types";
 
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+const ai = new GoogleGenAI({ apiKey: "AIzaSyD8KnQz3OpAru1MNvYs49fWHUCR3MeFqTE" });
 
 const innovationSchema = {
   type: Type.OBJECT,
