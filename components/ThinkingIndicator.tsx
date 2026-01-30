@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Loader2, CheckCircle2 } from 'lucide-react';
 
 const STEPS = [
+  "Thinking of smart improvements…",  // PRD-specified loading text
   "Analyzing your context...",
-  "Identifying key constraints...",
   "Brainstorming micro-innovations...",
   "Refining for maximum impact...",
   "Finalizing suggestions..."
@@ -24,16 +24,16 @@ const ThinkingIndicator: React.FC = () => {
       <div className="bg-white border border-indigo-100 rounded-xl p-4 shadow-sm flex flex-col gap-3">
         <div className="flex items-center gap-3">
           <div className="relative">
-             <div className="absolute inset-0 bg-indigo-100 rounded-full animate-ping opacity-75"></div>
-             <div className="relative bg-white p-1 rounded-full border border-indigo-100">
-                <Loader2 className="w-5 h-5 text-indigo-600 animate-spin" />
-             </div>
+            <div className="absolute inset-0 bg-indigo-100 rounded-full animate-ping opacity-75"></div>
+            <div className="relative bg-white p-1 rounded-full border border-indigo-100">
+              <Loader2 className="w-5 h-5 text-indigo-600 animate-spin" />
+            </div>
           </div>
           <span className="font-medium text-slate-700 text-sm animate-pulse">
             {STEPS[currentStep]}
           </span>
         </div>
-        
+
         <div className="space-y-1.5 pl-11">
           {STEPS.map((step, idx) => (
             idx < currentStep && (
