@@ -26,11 +26,18 @@ const SuggestionCard: React.FC<SuggestionCardProps> = ({ suggestion, index, onRe
     <div className={`group bg-white rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden animate-in fade-in slide-in-from-bottom-8 fill-mode-backwards ${delayClass}`}>
       <div className="p-6 sm:p-8 relative">
         <div className="flex items-center justify-between mb-3">
-          <span className="inline-flex items-center px-2.5 py-0.5 rounded-md bg-indigo-50 text-indigo-700 text-xs font-semibold uppercase tracking-wide">
-            {suggestion.category}
-          </span>
+          <div className="flex items-center gap-2">
+            <span className="inline-flex items-center px-2.5 py-0.5 rounded-md bg-indigo-50 text-indigo-700 text-xs font-semibold uppercase tracking-wide">
+              {suggestion.category}
+            </span>
+            {suggestion.isEarlyIdea && (
+              <span className="inline-flex items-center px-2.5 py-0.5 rounded-md bg-amber-50 text-amber-700 text-xs font-semibold uppercase tracking-wide border border-amber-200">
+                ✨ Early Idea
+              </span>
+            )}
+          </div>
           <div className="flex items-center gap-1">
-            <button 
+            <button
               onClick={() => onRefine(suggestion.title)}
               className="text-slate-400 hover:text-indigo-600 transition-colors p-1.5 rounded-md hover:bg-indigo-50 flex items-center gap-1"
               title="Refine this idea"
@@ -39,7 +46,7 @@ const SuggestionCard: React.FC<SuggestionCardProps> = ({ suggestion, index, onRe
               <span className="text-xs font-medium hidden group-hover:inline-block">Refine</span>
             </button>
             <div className="h-3 w-px bg-slate-200 mx-1"></div>
-            <button 
+            <button
               onClick={handleCopy}
               className="text-slate-400 hover:text-indigo-600 transition-colors p-1.5 rounded-md hover:bg-indigo-50"
               title="Copy suggestion"
@@ -52,7 +59,7 @@ const SuggestionCard: React.FC<SuggestionCardProps> = ({ suggestion, index, onRe
         <h3 className="text-xl font-bold text-slate-900 mb-3 group-hover:text-indigo-600 transition-colors pr-6">
           {suggestion.title}
         </h3>
-        
+
         <p className="text-slate-600 leading-relaxed mb-6 text-base">
           <TypewriterText text={suggestion.explanation} speed={10} />
         </p>

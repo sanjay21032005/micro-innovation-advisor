@@ -3,6 +3,7 @@ export interface MicroInnovation {
   explanation: string;
   nextStep: string;
   category: string;
+  isEarlyIdea?: boolean; // Flag for suggestions from vague input
 }
 
 export enum AppState {

@@ -36,6 +36,9 @@ const innovationSchema = {
 };
 
 export const generateInnovations = async (description: string): Promise<MicroInnovation[]> => {
+  // Detect vague/short input (less than 50 characters)
+  const isVagueInput = description.trim().length < 50;
+
   try {
     const prompt = `
       You are an AI-powered Micro-Innovation Advisor.
@@ -44,6 +47,13 @@ export const generateInnovations = async (description: string): Promise<MicroInn
       The user will provide a 2–5 sentence description of a web page, product, or workflow.
 
       User Input: "${description}"
+
+      ${isVagueInput ? `
+      NOTE: The user's input is quite brief. Generate helpful suggestions anyway, but:
+      - Keep assumptions minimal
+      - Focus on universally applicable improvements
+      - Be clear these are initial ideas that can be refined with more context
+      ` : ''}
 
       Your response must:
       * Generate 3–5 micro-innovation suggestions
@@ -84,7 +94,7 @@ export const generateInnovations = async (description: string): Promise<MicroInn
         responseMimeType: "application/json",
         responseSchema: innovationSchema,
         systemInstruction: "You are an AI-powered Micro-Innovation Advisor that favors playful, modern, and delightful improvements.",
-        temperature: 0.7, 
+        temperature: 0.7,
       },
     });
 
@@ -94,7 +104,17 @@ export const generateInnovations = async (description: string): Promise<MicroInn
     }
 
     const data = JSON.parse(text);
-    return data.suggestions || [];
+    const suggestions = data.suggestions || [];
+
+    // Mark suggestions as early ideas if input was vague
+    if (isVagueInput) {
+      return suggestions.map((s: MicroInnovation) => ({
+        ...s,
+        isEarlyIdea: true
+      }));
+    }
+
+    return suggestions;
 
   } catch (error) {
     console.error("Error generating innovations:", error);
